@@ -19,6 +19,7 @@ xobst = zeros(1, 9);
 
 % figure
 figure;
+linewidth = 1;
 
 %% Init ROS
 % rosinit
@@ -43,20 +44,24 @@ while(1)
     y_hist = [y_hist(:,2:end), y];
     
     % MPC
-    xpred = zeros(6,27);
-    xtraj = zeros(6,27);
-    upred = zeros(4,26);
-    xobst = zeros(1, 9);
     xpred = reshape(mpc.Xpred,  [6, 27]);
     xtraj = reshape(mpc.Xtraj,  [6, 27]);
     upred = reshape(mpc.U,      [4, 26]);
     xobst = reshape(mpc.Xo,     [1,  9]);
-
-    plot(t, xpred(1:3,:));
-    hold on
-    plot(t, xtraj(1:3,:));
-    plot(t_hist, y_hist(1:3,:));
-    legend(['xpred\_x'; 'xpred\_y'; 'xpred\_z'; 'xtraj\_x'; 'xtraj\_y'; 'xtraj\_z'], 'Location','southoutside','NumColumns',3);
+    
+    plot(t_hist, y_hist(1,:),'b','LineWidth',linewidth);
+    hold on;
+    plot(t_hist, y_hist(2,:),'r','LineWidth',linewidth);
+    plot(t_hist, y_hist(3,:),'k','LineWidth',linewidth);
+    
+    plot(t, xpred(1,:),'--b','LineWidth',linewidth);
+    plot(t, xpred(2,:),'--r','LineWidth',linewidth);
+    plot(t, xpred(3,:),'--k','LineWidth',linewidth);
+    
+    plot(t, xtraj(1,:),':b','LineWidth',linewidth);
+    plot(t, xtraj(2,:),':r','LineWidth',linewidth);
+    plot(t, xtraj(3,:),':k','LineWidth',linewidth);
+    legend(['x'; 'y'; 'z'], 'Location','southoutside','NumColumns',3);
     xlim([-5 2.5]);
     hold off
     
